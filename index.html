@@ -331,6 +331,8 @@
    deleteButton.addEventListener("click", function() {
      record.remove();
 
+   alert("削除しました！");
+
    if (purchaseMonth === currentMonth) {
      total = total - purchase.amount;
 
@@ -461,6 +463,8 @@
 
   deleteButton.addEventListener("click", function() {
     record.remove();
+
+    alert("削除しました！");
 
     total = total - purchase.amount;
     totalAmount.textContent = "¥" + total.toLocaleString();
