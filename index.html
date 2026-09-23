@@ -233,6 +233,11 @@
     <span id="totalAmount">¥0</span>
   </div>
 
+  <div class="total">
+    <div class="total-title">今日の合計</div>
+    <span id="todayTotalAmount">¥0</span>
+  </div>
+
   <div class="payment-totals">
    <div><span class="payment-name">クレカ</span>：<span id="creditTotal">¥0</span></div>
    <div><span class="payment-name">PayPay</span>：<span id="paypayTotal">¥0</span></div>
@@ -293,6 +298,8 @@
 　　const records = document.querySelector(".records");
 　　const totalAmount = document.getElementById("totalAmount");
 
+   const todayTotalAmount = document.getElementById("todayTotalAmount");
+
     const creditTotalDisplay = document.getElementById("creditTotal");
     const paypayTotalDisplay = document.getElementById("paypayTotal");
     const cashTotalDisplay = document.getElementById("cashTotal");
@@ -301,11 +308,14 @@
    let creditTotal = 0;
    let paypayTotal = 0;
    let cashTotal = 0;
+   let todayTotal = 0;
 
 　　let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
 
 　　const now = new Date();
 　　const currentMonth = now.getMonth() + 1;
+
+   const currentDay = now.getDate();
 
 　　purchases.forEach(function(purchase) {
 　　const purchaseMonth = Number(purchase.date.split("/")[0]);
@@ -323,6 +333,12 @@
 
    if (purchaseMonth === currentMonth) {
      total = total - purchase.amount;
+
+      const purchaseDay = Number(purchase.date.split("/")[1]);
+
+      if (purchaseDay === currentDay) {
+        todayTotal = todayTotal + purchase.amount;
+      } 
 
      totalAmount.textContent = "¥" + total.toLocaleString();
 
@@ -371,6 +387,8 @@
    });
 
 　　totalAmount.textContent = "¥" + total.toLocaleString();
+
+   todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
 
    creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
    paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
