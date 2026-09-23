@@ -336,11 +336,12 @@
    if (purchaseMonth === currentMonth) {
      total = total - purchase.amount;
 
-      const purchaseDay = Number(purchase.date.split("/")[1]);
+   const purchaseDay = Number(purchase.date.split("/")[1]);
 
-      if (purchaseDay === currentDay) {
-        todayTotal = todayTotal + purchase.amount;
-      } 
+   if (purchaseDay === currentDay) {
+    todayTotal = todayTotal - purchase.amount;
+    todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
+   }
 
      totalAmount.textContent = "¥" + total.toLocaleString();
 
@@ -372,6 +373,11 @@
 　　if (purchaseMonth === currentMonth) {
   　　total = total + purchase.amount;
 
+      const purchaseDay = Number(purchase.date.split("/")[1]);
+
+      if (purchaseDay === currentDay) {
+        todayTotal = todayTotal + purchase.amount;
+      }
 
     if (purchase.payment === "クレカ") {
       creditTotal = creditTotal + purchase.amount;
@@ -471,6 +477,9 @@
 
     total = total - purchase.amount;
     totalAmount.textContent = "¥" + total.toLocaleString();
+
+    todayTotal = todayTotal - purchase.amount;
+    todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
 
     if (purchase.payment === "クレカ") {
       creditTotal = creditTotal - purchase.amount;
