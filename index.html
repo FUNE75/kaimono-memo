@@ -435,6 +435,9 @@
 　　total = total + Number(amount.value);
 　　totalAmount.textContent = "¥" + total.toLocaleString();
 
+    todayTotal = todayTotal + Number(amount.value);
+    todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
+
     if (payment.value === "クレカ") {
       creditTotal = creditTotal + Number(amount.value);
     }
