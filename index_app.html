@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+　<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>買ったものメモ</title>
+
+  <style>
+    body {
+      background-color: #FFF4C7;
+  background-image: radial-gradient(#f2dda0 3px, transparent 7px);
+  background-size: 50px 50px;
+      font-family: sans-serif;
+      font-weight: 500;
+    }
+
+    .app {
+      width: 95%;
+      max-width: 380px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      width: 90%;
+      width: 380px;
+      margin: 0 auto;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .tabs button {
+      flex: 1;
+      border: none;
+      background-color: #FFF4C7;
+      padding: 12px 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: #a8b8ae;
+    }
+
+    .tabs button.active {
+      color: #526b5a;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 10px 0 15px;
+      color: #E83E8C;
+      font-weight: 800;
+    }
+
+    .total {
+      text-align: center;
+      margin: 10px 0  30px;
+    }
+
+    .total-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    #totalAmount {
+      font-size: 28px;
+      font-weight: bold;
+      color: #526b5a;
+    }
+
+    .payment-totals {
+      width: 150px;
+      margin: 0 auto;
+    }
+
+    .payment-totals div {
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 2px solid #E83E8C;
+      border-radius: 8px;
+     
+    }
+
+    .payment {
+      margin: 20px 0;
+    }
+
+    .payment-title {
+      margin-bottom: 10px;
+    }
+
+    .payment-totals {
+      width: 150px;
+      margin: 0 auto;
+    }
+
+    .payment-totals div {
+      text-align: left;
+      margin: 5px;
+    }
+
+    .payment-name {
+      display: inline-block;
+      width: 60px;
+    }
+
+    .payment-options {
+      display: flex;
+      justify-content: space-between;
+      width: 100%
+      margin-top: 8px;
+    }
+
+    .payment input {
+      display: none;
+    }
+
+    .payment label {
+      display: inline-block;
+      flex: 1;
+      padding: 10px 10px;
+      border: none;
+      background-color: #fcebef;
+      border-radius: 8px;
+      margin-right: 5px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .payment label:has(input:checked) {
+      background-color: #f3b6c8;
+      border: 2px solid #E83E8C;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    #recordButton {
+      margin-top: 40px;
+      background-color: #526b5a;
+      border: 4px solid #526b5a;
+      color: white;
+      border-radius: 8px;
+    }
+    
+   .delete-button {
+     width: auto;
+     padding: 5px 12px;
+     font-size: 12px;
+     position: absolute;
+     right: 15px;
+     top: 15px;
+   }
+
+   .records {
+     margin-top: 30px;
+   }
+
+   .record {
+     padding: 15px;
+     margin-bottom: 10px;
+     background-color: #f8f8f8;
+     border-radius: 10px;
+     white-space: pre-line;
+     position: relative;
+     line-height: 2.0;
+   }
+
+  #history-screen,
+  #summary-screen {
+    display: none;
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>買ったものメモ</h1>
+
+<div class="tabs">
+  <button id="recordTab">きろく</button>
+  <button id="summaryTab">まとめ</button>
+  <button id="historyTab">りれき</button>
+</div>
+
+<div class="app">
+
+ <div id="record-screen">
+
+  <input type="text" id="item" placeholder="買ったもの">
+
+  <input type="number" id="amount" placeholder="金額">
+
+  <div class="payment">
+    <div class="payment-title">支払方法</div>
+    <div class="payment-options">
+     <label><input type="radio" name="payment" value="クレカ"> クレカ</label><label><input type="radio" name="payment" value="PayPay"> PayPay</label><label><input type="radio" name="payment" value="現金"> 現金</label>
+     </div> 
+    </div>
+
+<button id="recordButton">記録する</button>
+
+</div>
+
+<div id="history-screen">
+
+<div class="records">
+
+ </div>
+
+ </div>
+
+<div id="summary-screen">
+
+  <div class="total">
+    <div class="total-title">今月の合計</div>
+    <span id="totalAmount">¥0</span>
+  </div>
+
+  <div class="payment-totals">
+   <div><span class="payment-name">クレカ</span>：<span id="creditTotal">¥0</span></div>
+   <div><span class="payment-name">PayPay</span>：<span id="paypayTotal">¥0</span></div>
+   <div><span class="payment-name">現金</span>：<span id="cashTotal">¥0</span></div>
+  </div>
+
+</div>
+
+</div>
+
+
+
+<script>
+   const button = document.getElementById("recordButton");
+
+  const recordTab = document.getElementById("recordTab");
+  const summaryTab = document.getElementById("summaryTab");
+  const historyTab = document.getElementById("historyTab");
+
+  const recordScreen = document.getElementById("record-screen");
+  const summaryScreen = document.getElementById("summary-screen");
+  const historyScreen = document.getElementById("history-screen");
+
+  recordTab.classList.add("active");
+
+   recordTab.addEventListener("click", function() {
+     recordScreen.style.display = "block";
+     summaryScreen.style.display = "none";
+     historyScreen.style.display = "none";
+
+       recordTab.classList.add("active");
+       summaryTab.classList.remove("active");
+       historyTab.classList.remove("active");
+   });
+
+   summaryTab.addEventListener("click", function() {
+     recordScreen.style.display = "none";
+     summaryScreen.style.display = "block";
+     historyScreen.style.display = "none";
+
+      recordTab.classList.remove("active");
+      summaryTab.classList.add("active");
+      historyTab.classList.remove("active");
+   });
+
+   historyTab.addEventListener("click", function() {
+     recordScreen.style.display = "none";
+     summaryScreen.style.display = "none";
+     historyScreen.style.display = "block";
+
+      recordTab.classList.remove("active");
+      summaryTab.classList.remove("active");
+      historyTab.classList.add("active");
+   });
+
+　　const item = document.getElementById("item");
+ 　 const amount = document.getElementById("amount");
+　　const records = document.querySelector(".records");
+　　const totalAmount = document.getElementById("totalAmount");
+
+    const creditTotalDisplay = document.getElementById("creditTotal");
+    const paypayTotalDisplay = document.getElementById("paypayTotal");
+    const cashTotalDisplay = document.getElementById("cashTotal");
+
+　　let total = 0;
+   let creditTotal = 0;
+   let paypayTotal = 0;
+   let cashTotal = 0;
+
+　　let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+
+　　const now = new Date();
+　　const currentMonth = now.getMonth() + 1;
+
+　　purchases.forEach(function(purchase) {
+　　const purchaseMonth = Number(purchase.date.split("/")[0]);
+ 　 const record = document.createElement("div");
+   record.className = "record";
+   record.textContent = purchase.date + "\n" + purchase.item + "　¥" + purchase.amount + "　" + purchase.payment;
+  
+   const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+   deleteButton.textContent = "削除"; 
+   record.appendChild(deleteButton);
+
+   deleteButton.addEventListener("click", function() {
+     record.remove();
+
+   if (purchaseMonth === currentMonth) {
+     total = total - purchase.amount;
+
+     totalAmount.textContent = "¥" + total.toLocaleString();
+
+    if (purchase.payment === "クレカ") {
+      creditTotal = creditTotal - purchase.amount;
+    }
+
+    if (purchase.payment === "PayPay") {
+      paypayTotal = paypayTotal - purchase.amount;
+    }
+
+    if (purchase.payment === "現金") {
+      cashTotal = cashTotal - purchase.amount;
+    }
+
+    creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
+    paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
+    cashTotalDisplay.textContent = "¥" + cashTotal.toLocaleString();
+
+   }
+
+   const index = purchases.indexOf(purchase);
+   purchases.splice(index, 1);
+   localStorage.setItem("purchases", JSON.stringify(purchases));
+   });
+
+   records.appendChild(record);
+
+　　if (purchaseMonth === currentMonth) {
+  　　total = total + purchase.amount;
+
+
+    if (purchase.payment === "クレカ") {
+      creditTotal = creditTotal + purchase.amount;
+    }
+
+    if (purchase.payment === "PayPay") {
+      paypayTotal = paypayTotal + purchase.amount;
+    }
+
+    if (purchase.payment === "現金") {
+      cashTotal = cashTotal + purchase.amount;
+    }
+　　}
+
+   });
+
+　　totalAmount.textContent = "¥" + total.toLocaleString();
+
+   creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
+   paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
+   cashTotalDisplay.textContent = "¥" + cashTotal.toLocaleString();
+
+  button.addEventListener("click", function() {
+
+    if (item.value.trim() === "") {
+      alert("買ったものを入力してください");
+      return;
+    }
+
+    if (amount.value.trim() === "") {
+      alert("金額を入力してください");
+      return;
+    }
+   
+　　const now = new Date();
+   
+　　const month = now.getMonth() + 1;
+　　const day = now.getDate();
+　　const hour = now.getHours();
+　　const minute = now.getMinutes();
+    const minuteText = String(minute).padStart(2, "0");
+
+　　const dateText = month + "/" + day + " " + hour + ":" + minuteText;
+
+　　const payment = document.querySelector('input[name="payment"]:checked'); 
+
+　　　　if (!payment) {
+ 　　　　 alert("支払方法を選んでください");
+ 　　　　 return;
+　　　　}
+
+　　const purchase = {
+ 　　 date: dateText,
+　　  item: item.value,
+　　  amount: Number(amount.value),
+ 　　 payment: payment.value
+　　};
+
+　　total = total + Number(amount.value);
+　　totalAmount.textContent = "¥" + total.toLocaleString();
+
+    if (payment.value === "クレカ") {
+      creditTotal = creditTotal + Number(amount.value);
+    }
+
+    if (payment.value === "PayPay") {
+      paypayTotal = paypayTotal + Number(amount.value);
+    }
+
+    if (payment.value === "現金") {
+      cashTotal = cashTotal + Number(amount.value);
+    }
+
+   creditTotalDisplay.textContent = "¥" + creditTotal;
+   paypayTotalDisplay.textContent = "¥" + paypayTotal;
+   cashTotalDisplay.textContent = "¥" + cashTotal;
+
+   const record = document.createElement("div");
+
+  record.className = "record";
+  record.textContent = dateText + "\n" +　item.value + "　¥" + amount.value + "　" + payment.value;
+
+  const deleteButton = document.createElement("button");
+　deleteButton.className = "delete-button";
+  deleteButton.textContent = "削除";
+  record.appendChild(deleteButton);
+
+  deleteButton.addEventListener("click", function() {
+    record.remove();
+
+    total = total - purchase.amount;
+    totalAmount.textContent = "¥" + total.toLocaleString();
+
+    if (purchase.payment === "クレカ") {
+      creditTotal = creditTotal - purchase.amount;
+    }
+
+    if (purchase.payment === "PayPay") {
+      paypayTotal = paypayTotal - purchase.amount;
+    }
+
+    if (purchase.payment === "現金") {
+      cashTotal = cashTotal - purchase.amount;
+    }
+
+creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
+paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
+cashTotalDisplay.textContent = "¥" + cashTotal.toLocaleString();
+
+    const index = purchases.indexOf(purchase);
+    purchases.splice(index, 1);
+    localStorage.setItem("purchases", JSON.stringify(purchases));
+
+  });
+
+  purchases.push(purchase);
+　localStorage.setItem("purchases", JSON.stringify(purchases));
+ 
+ records.appendChild(record);
+
+　item.value = "";
+
+　amount.value = "";
+
+  payment.checked = false;
+
+  });
+
+
+</script>
+
+
+</body>
+
+</html>
