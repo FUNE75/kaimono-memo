@@ -375,11 +375,11 @@ editButton.addEventListener("click", function() {
     <input type="number" value="${purchase.amount}">
 
     <label>支払方法</label>
-    <select>
-      <option value="クレカ">クレカ</option>
-      <option value="PayPay">PayPay</option>
-      <option value="現金">現金</option>
-    </select>
+  <select>
+    <option value="クレカ" ${purchase.payment === "クレカ" ? "selected" : ""}>クレカ</option>
+    <option value="PayPay" ${purchase.payment === "PayPay" ? "selected" : ""}>PayPay</option>
+    <option value="現金" ${purchase.payment === "現金" ? "selected" : ""}>現金</option>
+  </select>
 
     <button class="save-button">保存</button>
     <button class="cancel-button">キャンセル</button>
