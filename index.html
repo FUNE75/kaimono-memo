@@ -389,6 +389,14 @@ editButton.addEventListener("click", function() {
 
   const saveButton = editArea.querySelector(".save-button");
 
+  const cancelButton = editArea.querySelector(".cancel-button");
+
+  cancelButton.addEventListener("click", function() {
+    editArea.remove();
+});
+
+
+
 saveButton.addEventListener("click", function() {
 
   const inputs = editArea.querySelectorAll("input");
