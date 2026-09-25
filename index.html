@@ -348,16 +348,19 @@
 
    const currentDay = now.getDate();
 
-alert("今日の日付：" + currentDay);
-
 　　purchases.forEach(function(purchase) {
 　　const purchaseMonth = Number(purchase.date.split("/")[0]);
  　 const record = document.createElement("div");
    record.className = "record";
    record.textContent = purchase.date + "\n" + purchase.item + "　¥" + purchase.amount + "　" + purchase.payment;
   
+   const editButton = document.createElement("button");
+   editButton.className = "edit-button";
+   editButton.textContent = "編集";
+   record.appendChild(editButton);   
+
    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
+   deleteButton.className = "delete-button";
    deleteButton.textContent = "削除"; 
    record.appendChild(deleteButton);
 
