@@ -387,6 +387,27 @@ editButton.addEventListener("click", function() {
 
   record.appendChild(editArea);
 
+  const saveButton = editArea.querySelector(".save-button");
+
+saveButton.addEventListener("click", function() {
+
+  const inputs = editArea.querySelectorAll("input");
+
+  const newDate = inputs[0].value;
+  const newItem = inputs[1].value;
+  const newAmount = Number(inputs[2].value);
+
+  const newPayment = editArea.querySelector("select").value;
+
+  purchase.date = newDate;
+  purchase.item = newItem;
+  purchase.amount = newAmount;
+  purchase.payment = newPayment;
+
+  localStorage.setItem("purchases", JSON.stringify(purchases));
+
+});
+
 });
 
    const deleteButton = document.createElement("button");
