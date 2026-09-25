@@ -425,7 +425,7 @@ saveButton.addEventListener("click", function() {
    if (purchaseMonth === currentMonth) {
      total = total - purchase.amount;
 
-   const purchaseDay = Number(purchase.date.split("/")[1]);
+   const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
 
    if (purchaseDay === currentDay) {
     todayTotal = todayTotal - purchase.amount;
@@ -462,7 +462,7 @@ saveButton.addEventListener("click", function() {
 　　if (purchaseMonth === currentMonth) {
   　　total = total + purchase.amount;
 
-      const purchaseDay = Number(purchase.date.split("/")[1]);
+      const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
 
       if (purchaseDay === currentDay) {
         todayTotal = todayTotal + purchase.amount;
