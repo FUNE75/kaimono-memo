@@ -406,13 +406,9 @@ saveButton.addEventListener("click", function() {
 
   localStorage.setItem("purchases", JSON.stringify(purchases));
 
-  record.firstChild.textContent =
-    purchase.date + "\n" +
-    purchase.item + "　¥" +
-    purchase.amount + "　" +
-    purchase.payment;
+  location.reload();
 
-});
+  });
 
 });
 
