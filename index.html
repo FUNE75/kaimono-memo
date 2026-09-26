@@ -567,6 +567,70 @@ saveButton.addEventListener("click", function() {
   deleteButton.textContent = "削除";
   record.appendChild(deleteButton);
 
+  const editButton = document.createElement("button");
+  editButton.className = "edit-button";
+  editButton.textContent = "編集";
+  record.appendChild(editButton);
+
+editButton.addEventListener("click", function() {
+
+  const editArea = document.createElement("div");
+  editArea.className = "edit-area";
+
+  editArea.innerHTML = `
+    <label>日付</label>
+    <input type="text" value="${purchase.date}">
+
+    <label>内容</label>
+    <input type="text" value="${purchase.item}">
+
+    <label>金額</label>
+    <input type="number" value="${purchase.amount}">
+
+    <label>支払方法</label>
+    <select>
+      <option value="クレカ" ${purchase.payment === "クレカ" ? "selected" : ""}>クレカ</option>
+      <option value="PayPay" ${purchase.payment === "PayPay" ? "selected" : ""}>PayPay</option>
+      <option value="現金" ${purchase.payment === "現金" ? "selected" : ""}>現金</option>
+    </select>
+
+    <button class="save-button">保存</button>
+    <button class="cancel-button">キャンセル</button>
+  `;
+
+  record.appendChild(editArea);
+
+  const saveButton = editArea.querySelector(".save-button");
+
+  const cancelButton = editArea.querySelector(".cancel-button");
+
+  cancelButton.addEventListener("click", function() {
+    editArea.remove();
+  });
+
+  saveButton.addEventListener("click", function() {
+
+    const inputs = editArea.querySelectorAll("input");
+
+    const newDate = inputs[0].value;
+    const newItem = inputs[1].value;
+    const newAmount = Number(inputs[2].value);
+
+    const newPayment = editArea.querySelector("select").value;
+
+    purchase.date = newDate;
+    purchase.item = newItem;
+    purchase.amount = newAmount;
+    purchase.payment = newPayment;
+
+    localStorage.setItem("purchases", JSON.stringify(purchases));
+
+    location.reload();
+
+  });
+
+});
+
   deleteButton.addEventListener("click", function() {
 
     const deleteConfirm = document.getElementById("delete-confirm");
