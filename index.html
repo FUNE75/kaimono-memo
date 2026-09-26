@@ -404,6 +404,8 @@
 
 editButton.addEventListener("click", function() {
 
+  editButton.style.display = "none";
+
   const editArea = document.createElement("div");
   editArea.className = "edit-area";
 
@@ -631,6 +633,8 @@ saveButton.addEventListener("click", function() {
   record.appendChild(editButton);
 
 editButton.addEventListener("click", function() {
+
+  editButton.style.display = "none";  
 
   const editArea = document.createElement("div");
   editArea.className = "edit-area";
