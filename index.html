@@ -470,6 +470,8 @@ saveButton.addEventListener("click", function() {
 
   localStorage.setItem("purchases", JSON.stringify(purchases));
 
+  localStorage.setItem("showHistory", "true");
+
   location.reload();
 
   });
@@ -569,6 +571,13 @@ saveButton.addEventListener("click", function() {
    creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
    paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
    cashTotalDisplay.textContent = "¥" + cashTotal.toLocaleString();
+
+   const showHistory = localStorage.getItem("showHistory");
+
+   if (showHistory === "true") {
+     historyTab.click();
+     localStorage.removeItem("showHistory");
+   }
 
   button.addEventListener("click", function() {
 
@@ -697,6 +706,8 @@ editButton.addEventListener("click", function() {
     purchase.payment = newPayment;
 
     localStorage.setItem("purchases", JSON.stringify(purchases));
+
+    localStorage.setItem("showHistory", "true");
 
     location.reload();
 
