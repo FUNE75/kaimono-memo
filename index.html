@@ -438,6 +438,25 @@
      return purchaseDate >= weekStart && purchaseDate < weekEnd;
    }
 
+
+purchases.sort(function(a, b) {
+  function getDateValue(purchase) {
+    const dateParts = purchase.date.split(" ");
+    const monthDay = dateParts[0].split("/");
+    const timeParts = (dateParts[1] || "0:0").split(":");
+
+    return new Date(
+      now.getFullYear(),
+      Number(monthDay[0]) - 1,
+      Number(monthDay[1]),
+      Number(timeParts[0]),
+      Number(timeParts[1] || 0)
+    ).getTime();
+  }
+
+  return getDateValue(b) - getDateValue(a);
+});
+
 　　purchases.forEach(function(purchase) {
 　　const purchaseMonth = Number(purchase.date.split("/")[0]);
 
@@ -584,7 +603,7 @@ if (isInCurrentWeek(purchase)) {
 });
 
 
-   records.prepend(record);
+   records.append(record);
 
 　　if (purchaseMonth === currentMonth) {
   　　total = total + purchase.amount;
