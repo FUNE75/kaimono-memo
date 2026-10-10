@@ -540,6 +540,11 @@ saveButton.addEventListener("click", function() {
 
     record.remove();
 
+if (isInCurrentWeek(purchase)) {
+  weekTotal = weekTotal - purchase.amount;
+  weekTotalAmount.textContent = "¥" + weekTotal.toLocaleString();
+}
+
     if (purchaseMonth === currentMonth) {
       total = total - purchase.amount;
 
@@ -775,6 +780,9 @@ undoButton.onclick = function() {
 
 confirmDeleteButton.onclick = function() {
   record.remove();
+
+weekTotal = weekTotal - purchase.amount;
+weekTotalAmount.textContent = "¥" + weekTotal.toLocaleString();
 
   total = total - purchase.amount;
   totalAmount.textContent = "¥" + total.toLocaleString();
