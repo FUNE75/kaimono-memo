@@ -392,6 +392,8 @@
 
    const todayTotalAmount = document.getElementById("todayTotalAmount");
 
+   const weekTotalAmount = document.getElementById("weekTotalAmount");
+
     const creditTotalDisplay = document.getElementById("creditTotal");
     const paypayTotalDisplay = document.getElementById("paypayTotal");
     const cashTotalDisplay = document.getElementById("cashTotal");
@@ -402,6 +404,8 @@
    let cashTotal = 0;
    let todayTotal = 0;
 
+   let weekTotal = 0;
+
 　　let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
 
 　　const now = new Date();
@@ -409,8 +413,38 @@
 
    const currentDay = now.getDate();
 
+
+   const weekStart = new Date(now);
+   const dayOfWeek = weekStart.getDay();
+   const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+   weekStart.setDate(weekStart.getDate() + diffToMonday);
+   weekStart.setHours(0, 0, 0, 0);
+
+   const weekEnd = new Date(weekStart);
+   weekEnd.setDate(weekEnd.getDate() + 7);
+
+
+   function isInCurrentWeek(purchase) {
+     const purchaseMonth = Number(purchase.date.split("/")[0]);
+     const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
+
+     const purchaseDate = new Date(
+       now.getFullYear(),
+       purchaseMonth - 1,
+       purchaseDay
+     );
+
+     return purchaseDate >= weekStart && purchaseDate < weekEnd;
+   }
+
 　　purchases.forEach(function(purchase) {
 　　const purchaseMonth = Number(purchase.date.split("/")[0]);
+
+    if (isInCurrentWeek(purchase)) {
+      weekTotal = weekTotal + purchase.amount;
+    }
+
  　 const record = document.createElement("div");
    record.className = "record";
    record.textContent = purchase.date + "\n" + purchase.item + "　¥" + purchase.amount + "　" + purchase.payment;
@@ -574,6 +608,8 @@ saveButton.addEventListener("click", function() {
 　　totalAmount.textContent = "¥" + total.toLocaleString();
 
    todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
+
+   weekTotalAmount.textContent = "¥" + weekTotal.toLocaleString();
 
    creditTotalDisplay.textContent = "¥" + creditTotal.toLocaleString();
    paypayTotalDisplay.textContent = "¥" + paypayTotal.toLocaleString();
