@@ -664,6 +664,9 @@ saveButton.addEventListener("click", function() {
     todayTotal = todayTotal + Number(amount.value);
     todayTotalAmount.textContent = "¥" + todayTotal.toLocaleString();
 
+    weekTotal = weekTotal + Number(amount.value);
+    weekTotalAmount.textContent = "¥" + weekTotal.toLocaleString();
+
     if (payment.value === "クレカ") {
       creditTotal = creditTotal + Number(amount.value);
     }
