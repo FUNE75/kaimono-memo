@@ -408,6 +408,20 @@
 
 　　let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
 
+
+purchases = purchases.map(function(purchase) {
+  const parts = purchase.date.split(" ");
+  const dateParts = parts[0].split("/");
+
+  if (dateParts.length === 2) {
+    purchase.date = "2026/" + purchase.date;
+  }
+
+  return purchase;
+});
+
+localStorage.setItem("purchases", JSON.stringify(purchases));
+
 　　const now = new Date();
 　　const currentMonth = now.getMonth() + 1;
 
@@ -425,30 +439,32 @@
    weekEnd.setDate(weekEnd.getDate() + 7);
 
 
-   function isInCurrentWeek(purchase) {
-     const purchaseMonth = Number(purchase.date.split("/")[0]);
-     const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
 
-     const purchaseDate = new Date(
-       now.getFullYear(),
-       purchaseMonth - 1,
-       purchaseDay
-     );
+function isInCurrentWeek(purchase) {
+  const dateParts = purchase.date.split(" ");
+  const ymd = dateParts[0].split("/");
 
-     return purchaseDate >= weekStart && purchaseDate < weekEnd;
-   }
+  const purchaseDate = new Date(
+    Number(ymd[0]),
+    Number(ymd[1]) - 1,
+    Number(ymd[2])
+  );
+
+  return purchaseDate >= weekStart && purchaseDate < weekEnd;
+}
+
 
 
 purchases.sort(function(a, b) {
   function getDateValue(purchase) {
     const dateParts = purchase.date.split(" ");
-    const monthDay = dateParts[0].split("/");
+    const yearMonthDay = dateParts[0].split("/");
     const timeParts = (dateParts[1] || "0:0").split(":");
 
     return new Date(
-      now.getFullYear(),
-      Number(monthDay[0]) - 1,
-      Number(monthDay[1]),
+      Number(yearMonthDay[0]),
+      Number(yearMonthDay[1]) - 1,
+      Number(yearMonthDay[2]),
       Number(timeParts[0]),
       Number(timeParts[1] || 0)
     ).getTime();
@@ -458,7 +474,9 @@ purchases.sort(function(a, b) {
 });
 
 　　purchases.forEach(function(purchase) {
-　　const purchaseMonth = Number(purchase.date.split("/")[0]);
+　　
+const dateParts = purchase.date.split(" ")[0].split("/");
+const purchaseMonth = Number(dateParts[1]);
 
     if (isInCurrentWeek(purchase)) {
       weekTotal = weekTotal + purchase.amount;
@@ -567,7 +585,7 @@ if (isInCurrentWeek(purchase)) {
     if (purchaseMonth === currentMonth) {
       total = total - purchase.amount;
 
-      const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
+      const purchaseDay = Number(dateParts[2]);
 
       if (purchaseDay === currentDay) {
         todayTotal = todayTotal - purchase.amount;
@@ -608,7 +626,7 @@ if (isInCurrentWeek(purchase)) {
 　　if (purchaseMonth === currentMonth) {
   　　total = total + purchase.amount;
 
-      const purchaseDay = Number(purchase.date.split("/")[1].split(" ")[0]);
+      const purchaseDay = Number(purchase.date.split(" ")[0].split("/")[2]);
 
       if (purchaseDay === currentDay) {
         todayTotal = todayTotal + purchase.amount;
@@ -660,13 +678,15 @@ if (isInCurrentWeek(purchase)) {
    
 　　const now = new Date();
    
-　　const month = now.getMonth() + 1;
-　　const day = now.getDate();
-　　const hour = now.getHours();
-　　const minute = now.getMinutes();
-    const minuteText = String(minute).padStart(2, "0");
+　　
+   const year = now.getFullYear();
+   const month = now.getMonth() + 1;
+   const day = now.getDate();
+   const hour = now.getHours();
+   const minute = now.getMinutes();
+   const minuteText = String(minute).padStart(2, "0");
 
-　　const dateText = month + "/" + day + " " + hour + ":" + minuteText;
+   const dateText = year + "/" + month + "/" + day + " " + hour + ":" + minuteText;
 
 　　const payment = document.querySelector('input[name="payment"]:checked'); 
 
